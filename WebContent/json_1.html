@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#user_id").blur(function(){
+			$.post("user.do?opt=check",{user_id:$("#user_id").val()},
+					function(flag){
+				if(flag!=1){
+					alert("该用户不存在");
+					
+					$("#content").html("查无此人")
+				}
+			});
+		});
+		$("#login").click(function(){
+			$.post("user.do?opt=login",{user_id:$("#user_id").val(),user_pwd:$("#user_pwd").val()},
+				function(users){
+				if(users!=1){
+					
+					var user = eval ("(" + users + ")"); 
+					var str="<h1>登录成功</h1>"+"<p>user_id:"+user.user_id+";user_pwd:"+user.user_pwd+"</p>";
+					$("#content").html(str)
+				}else{
+					$("#content").html("登录失败")
+				}
+			});
+		});
+	})
+</script>
+</head>
+<body>
+<form action="">
+用户id:<input type="text" id="user_id" name="user_id">
+<br>
+用户密码:<input type="text" id="user_pwd" name="user_pwd">
+<br>
+
+<input type="button" id="login" value="login">
+</form>
+<div id="content">
+</div>
+</body>
+</html>
